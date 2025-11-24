@@ -1,14 +1,30 @@
 from langgraph.graph import MessagesState
+from core.domains import SunoRequest, SunoOptions
 
 
-# TODO: make it beautiful if you don't get lazy
-class InputState(MessagesState):
-    pass
+class AgentState(MessagesState):
+    query: str
+    thread_id: str
+    feedback: str | None
+    loop_count: int
 
 
-class OverallState(MessagesState):
-    song_info: dict[str, str]
+class MusicState(MessagesState):
+    query: str
+    thread_id: str
+    feedback: str | None
+    suno_options: dict | SunoOptions
+    request: SunoRequest | None
+    task: dict
+    status: dict
 
 
-class OutputState(MessagesState):
-    pass
+class AppState(MessagesState):
+    query: str
+    thread_id: str
+    feedback: str | None
+    loop_count: int
+    suno_options: dict | SunoOptions
+    request: SunoRequest | None
+    task: dict
+    status: dict

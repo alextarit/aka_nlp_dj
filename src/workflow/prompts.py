@@ -1,8 +1,23 @@
-from langchain_core.messages import SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage
 
-reasoning_prompt = SystemMessage(
-    content="""
-You are a helpful assistant that can answer questions about the song.
-As well as fulfill any user request aimed at creative activity in the field of music.
-"""
+lyrics_system_message = SystemMessage(
+    content=(
+        "Ты музыкальный ассистент. Работай в стиле ReAct: сначала кратко выдели музыкантов, композиции, стиль/тему, "
+        "потом при необходимости вызывай инструменты для получения текстов или контекста, дальше оцени достаточно ли сведений и, "
+        "когда готов, верни финальный текст песни. Используй минимум слов в размышлениях. "
+        "Когда выдаешь финальную песню, просто выдай текст без пояснений."
+    )
 )
+
+
+def build_suno_prepare_messages(query: str, song: str) -> list:
+    return [
+        SystemMessage(
+            content=(
+                "Определи название, стиль и текст для передачи в Suno. Строго сохраняй русский язык. "
+                "Текст адаптируй минимально, чтобы он был готов для пения. Если стиль не указан, выбери краткий жанр. "
+                "Название делай коротким."
+            )
+        ),
+        HumanMessage(content=f"Запрос: {query}\nТекст песни:\n{song}"),
+    ]

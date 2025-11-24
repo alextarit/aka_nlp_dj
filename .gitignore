@@ -20,3 +20,7 @@ __pycache__/
 
 # UV package manager
 uv.lock
+
+# draw_mermais script костыль
+src/draw_mermaid.py
+src/graph.png
