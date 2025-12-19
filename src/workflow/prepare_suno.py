@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from langchain_core.messages import AIMessage
-from core.llm_factory import get_llm_factory
+from utils.llm_retry import create_llm
 from workflow.prompts import build_suno_prepare_messages
 from workflow.state import MusicState
 from core.suno_prepare import SunoPayload, DefaultSunoPreparer
@@ -13,7 +13,6 @@ class SunoExtract(BaseModel):
 
 
 preparer = DefaultSunoPreparer()
-llm_factory = get_llm_factory()
 
 
 async def prepare_suno_request(state: MusicState) -> MusicState:
@@ -25,7 +24,7 @@ async def prepare_suno_request(state: MusicState) -> MusicState:
             break
     if not song_text and state.get("messages"):
         song_text = str(state["messages"][-1].content)
-    extractor = llm_factory.chat(temperature=0.2).with_structured_output(SunoExtract)
+    extractor = create_llm(temperature=0.2).with_structured_output(SunoExtract)
     prompt_messages = build_suno_prepare_messages(state.get("query", ""), song_text)
     parsed = await extractor.ainvoke(prompt_messages)
     prompt_text = options.get("prompt") or parsed.prompt

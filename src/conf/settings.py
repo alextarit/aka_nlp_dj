@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     # OpenAI settings
     OPENAI_API_KEY: str = ""
     OPENAI_DEFAULT_MODEL: str = "gpt-4.1"
+    TEMPERATURE: float = 0.2
+    OPENAI_API_BASE: str = ""
+    OPENAI_MAX_TOKENS: int = 4096
     # TODO План капка не удался, с vpn итмо недоступны внешние api(
     # QWEN_API_KEY: str = ""
     # DEFAULT_MODEL: str = "qwen3-32b"
